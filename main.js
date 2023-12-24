@@ -13,6 +13,8 @@ async function main() {
   }
 
   const passedURL = process.argv[2];
+
+  // Quit program if invalid URL is given
   try {
     const urlObject = new URL(passedURL);
   } catch (e) {

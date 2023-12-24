@@ -1,34 +1,36 @@
 const { stripURL, getURLs } = require("../crawl.js");
 const { test, expect } = require("@jest/globals");
 
-test("stripURL remove protocols", () => {
+test("stripURL - remove https://", () => {
   const output = stripURL("https://test.com/path");
   const expectedOutput = "test.com/path";
 
-  // Expects the output to equal to the expected output
-  // jest will log if the test passes or not
+  /*
+    Checks if the output is equal to the expected output.
+    Jest will log the result.
+  */
   expect(output).toEqual(expectedOutput);
 });
 
-test("stripURL remove trailing /", () => {
-  const output = stripURL("https://test.com/");
-  const expectedOutput = "test.com";
-  expect(output).toEqual(expectedOutput);
-});
-
-test("stripURL remove capitals", () => {
-  const output = stripURL("https://TEST.com/");
-  const expectedOutput = "test.com";
-  expect(output).toEqual(expectedOutput);
-});
-
-test("stripURL different protocol", () => {
+test("stripURL - remove http://", () => {
   const output = stripURL("http://test.com/");
   const expectedOutput = "test.com";
   expect(output).toEqual(expectedOutput);
 });
 
-test("getURLs absolute URLs", () => {
+test("stripURL - remove trailing /", () => {
+  const output = stripURL("https://test.com/");
+  const expectedOutput = "test.com";
+  expect(output).toEqual(expectedOutput);
+});
+
+test("stripURL - remove capitals in URL", () => {
+  const output = stripURL("https://TEST.com/");
+  const expectedOutput = "test.com";
+  expect(output).toEqual(expectedOutput);
+});
+
+test("getURLs - handling absolute URLs", () => {
   const htmlInput = `
   <html>
     <body>
@@ -41,7 +43,7 @@ test("getURLs absolute URLs", () => {
   expect(output).toEqual(expectedOutput);
 });
 
-test("getURLs relative URLs", () => {
+test("getURLs - handling relative URLs", () => {
   const htmlInput = `
   <html>
     <body>
@@ -54,7 +56,7 @@ test("getURLs relative URLs", () => {
   expect(output).toEqual(expectedOutput);
 });
 
-test("getURLs multiple anchor elements", () => {
+test("getURLs - finding multiple anchor elements", () => {
   const htmlInput = `
   <html>
     <body>
@@ -73,7 +75,7 @@ test("getURLs multiple anchor elements", () => {
   expect(output).toEqual(expectedOutput);
 });
 
-test("getURLs Invalid URLs", () => {
+test("getURLs - handling invalid URLs", () => {
   const htmlInput = `
   <html>
     <body>

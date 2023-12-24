@@ -1,11 +1,13 @@
 const { JSDOM } = require("jsdom");
 
 /**
- * Crawls a website
- * @param {*} baseURL Homepage of the website
- * @param {*} currentURL current page the crawler is on
- * @param {*} visitedPages array of web pages that have been visited
+ * Crawls an entire website
+ * @param {*} baseURL (string) Homepage of the website
+ * @param {*} currentURL (string) current page the crawler is on
+ * @param {*} visitedPages (Object) maps the url to its number of back-links
+ * @returns visitedPages
  */
+
 async function crawl(baseURL, currentURL, visitedPages) {
   // check if current url has the same domain as the base url
   const baseURLObject = new URL(baseURL);
@@ -15,12 +17,15 @@ async function crawl(baseURL, currentURL, visitedPages) {
   }
 
   const strippedCurrentURL = stripURL(currentURL);
+  // increments # of back-links
   if (visitedPages[strippedCurrentURL] > 0) {
     visitedPages[strippedCurrentURL]++;
     return visitedPages;
   }
 
+  // back-link to page found for the first time
   visitedPages[strippedCurrentURL] = 1;
+
   console.log("Crawling: " + currentURL);
 
   try {
@@ -34,13 +39,13 @@ async function crawl(baseURL, currentURL, visitedPages) {
 
     // stop crawling if what is fetched is not HTML
     const contentType = response.headers.get("content-type");
+
     // header may contain other info, such as charset=utf-8
     if (!contentType.includes("text/html")) {
       console.log("Response is not HTML for page: " + currentURL);
       return visitedPages;
     }
 
-    //.text() returns a promise
     const html = await response.text();
     const anchorsArray = getURLs(html, baseURL);
 
@@ -54,9 +59,18 @@ async function crawl(baseURL, currentURL, visitedPages) {
   }
 }
 
+/**
+ * Gets every URL from the html of the passed webpage
+ * @param {*} html (Promise) html from the passed url
+ * @param {*} currentPageURL (string) passed url
+ * @returns Array of every url on the webpage
+ */
+
 function getURLs(html, currentPageURL) {
   const urls = [];
   const dom = new JSDOM(html);
+
+  // gets every anchor element in the html and adds it to an array
   const links = dom.window.document.querySelectorAll("a");
   for (const link of links) {
     // checks if a link is relative
@@ -84,6 +98,7 @@ function stripURL(urlString) {
   const urlObject = new URL(urlString);
   const strippedURL = `${urlObject.hostname}${urlObject.pathname}`;
 
+  // removes ending slash if present
   if (strippedURL.length > 0 && strippedURL.at(strippedURL.length - 1) == "/") {
     return strippedURL.slice(0, -1);
   } else {
