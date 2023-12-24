@@ -1,3 +1,5 @@
+const { crawl } = require("./crawl.js");
+
 function main() {
   // first input argument is the interpreter, second is a link to main.js, and the third is the user input
   if (process.argv.length < 3) {
@@ -9,8 +11,16 @@ function main() {
     process.exit(1);
   }
 
-  const URL = process.argv[2];
-  console.log("Crawling " + URL + "...");
+  const passedURL = process.argv[2];
+  try {
+    const urlObject = new URL(passedURL);
+  } catch (e) {
+    console.log("Error with URL:" + e.message);
+    process.exit(1);
+  }
+
+  console.log("Crawling " + passedURL + "...");
+  crawl(passedURL);
 }
 
 main();
