@@ -1,4 +1,5 @@
 const { crawl } = require("./crawl.js");
+const { printSeoReport } = require("./seo-report.js");
 
 async function main() {
   // first input argument is the interpreter, second is a link to main.js, and the third is the user input
@@ -20,13 +21,10 @@ async function main() {
   }
 
   console.log("Crawling " + passedURL + "...");
+
   // crawl function returns a promise
   const visitedPages = await crawl(passedURL, passedURL, {});
-
-  // Object.entries allows us to iterate through the visitedPages object
-  for (const page of Object.entries(visitedPages)) {
-    console.log(page);
-  }
+  printSeoReport(visitedPages);
 }
 
 main();
