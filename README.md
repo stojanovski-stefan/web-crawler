@@ -31,7 +31,7 @@ Jest is used in this project
 ### Run using command line arguments
 
 ```
-    npm start http:/exampledomain.com
+    npm start https://exampledomain.com
 ```
 
 ### Run test suites
