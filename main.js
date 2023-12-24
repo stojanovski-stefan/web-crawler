@@ -1,6 +1,6 @@
 const { crawl } = require("./crawl.js");
 
-function main() {
+async function main() {
   // first input argument is the interpreter, second is a link to main.js, and the third is the user input
   if (process.argv.length < 3) {
     console.log("No website provided");
@@ -20,7 +20,13 @@ function main() {
   }
 
   console.log("Crawling " + passedURL + "...");
-  crawl(passedURL);
+  // crawl function returns a promise
+  const visitedPages = await crawl(passedURL, passedURL, {});
+
+  // Object.entries allows us to iterate through the visitedPages object
+  for (const page of Object.entries(visitedPages)) {
+    console.log(page);
+  }
 }
 
 main();

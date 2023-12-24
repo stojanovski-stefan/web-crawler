@@ -1,4 +1,4 @@
-const { stripURL, getURLs } = require("./crawl.js");
+const { stripURL, getURLs } = require("../crawl.js");
 const { test, expect } = require("@jest/globals");
 
 test("stripURL remove protocols", () => {
