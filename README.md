@@ -4,8 +4,6 @@
 
 ## Installation
 
----
-
 ### Clone into the repository
 
 ```
@@ -29,8 +27,6 @@ Jest is used in this project
 ```
 
 ## Usage Example
-
----
 
 ### Run using command line arguments
 
